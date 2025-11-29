@@ -1,0 +1,25 @@
+{
+  "storageConfigurations": [
+    {
+      "alias": "FilenRemote",
+      "remoteRootPath": "/nas_aivyssuser",
+      "localRootPath": "/nas_aivyssuser",
+      "cron": "* 3 1 * *",
+      "transfers": 4
+    },
+    {
+      "alias": "KoofrRemote",
+      "remoteRootPath": "/nas_plex/music",
+      "localRootPath": "/nas_plex/music",
+      "cron": "* * * * *",
+      "transfers": 4
+    },
+    {
+      "alias": "KoofrRemote",
+      "remoteRootPath": "/nas_homes_aivyssuser",
+      "localRootPath": "/nas_homes_aivyssuser",
+      "cron": "* * * * *",
+      "transfers": 4
+    }
+  ]
+}

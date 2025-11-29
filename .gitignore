@@ -1,0 +1,5 @@
+.config/go
+rclone
+*.iml
+.idea
+*.xml
