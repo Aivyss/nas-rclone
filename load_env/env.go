@@ -8,6 +8,7 @@ import (
 
 type storageConfiguration struct {
 	Alias          string `json:"alias"`
+	WorkerName     string `json:"workerName"`
 	RemoteRootPath string `json:"remoteRootPath"`
 	LocalRootPath  string `json:"localRootPath"`
 	Cron           string `json:"cron"`

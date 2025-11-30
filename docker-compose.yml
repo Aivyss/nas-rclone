@@ -3,10 +3,13 @@ services:
     image: 'golang:1.25'
     container_name: 'storage_sync'
     working_dir: '/app'
+    environment:
+      - TZ=Asia/Tokyo
     volumes:
       - '.:/app' # DO NOT FIX THIS (you need your rclone binary file and modified .config.json)
       - "./.config:/root/.config" # DO NOT FIX THIS
       - '/volume1/aivyssuser:/nas_aivyssuser' # 'source (in NAS - docker binding):destination (in CloudStorage)'
       - '/volume1/plex/music:/nas_plex/music' # 'source (in NAS - docker binding):destination (in CloudStorage)'
-      - '/volume1/homes/aivyssuser:/nas_homes_aivyssuser'
+      - '/volume1/homes/aivyssuser:/nas_homes_aivyssuser' # 'source (in NAS - docker binding):destination (in CloudStorage)'
+      - '/volume1/immich_aivyssuser:/nas_immich' # 'source (in NAS - docker binding):destination (in CloudStorage)'
     command: go run main.go

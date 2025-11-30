@@ -2,23 +2,34 @@
   "storageConfigurations": [
     {
       "alias": "FilenRemote",
+      "workerName": "Filen/nas_aivyssuser",
       "remoteRootPath": "/nas_aivyssuser",
       "localRootPath": "/nas_aivyssuser",
-      "cron": "* 3 1 * *",
+      "cron": "6 19 * * *",
       "transfers": 4
     },
     {
       "alias": "KoofrRemote",
+      "workerName": "Koofr/nas_plex/music",
       "remoteRootPath": "/nas_plex/music",
       "localRootPath": "/nas_plex/music",
-      "cron": "* * * * *",
+      "cron": "6 19 * * *",
       "transfers": 4
     },
     {
       "alias": "KoofrRemote",
+      "workerName": "Koofr/nas_homes_aivyssuser",
       "remoteRootPath": "/nas_homes_aivyssuser",
       "localRootPath": "/nas_homes_aivyssuser",
-      "cron": "* * * * *",
+      "cron": "6 19 * * *",
+      "transfers": 4
+    },
+    {
+      "alias": "KoofrRemote",
+      "workerName": "Koofr/nas_immich",
+      "remoteRootPath": "/nas_immich",
+      "localRootPath": "/nas_immich",
+      "cron": "6 19 * * *",
       "transfers": 4
     }
   ]

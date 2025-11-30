@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"nas-rclone/load_env"
-	"nas-rclone/state"
+	"nas-rclone/worker"
 	"os/exec"
 
 	"github.com/robfig/cron/v3"
@@ -21,40 +22,42 @@ func main() {
 	}
 
 	workerPool := cron.New()
-	workerBlocker := state.NewWorkerBlocker(len(initializationEnv.StorageConfigurations))
+	workers := createWorkers(len(initializationEnv.StorageConfigurations))
 	for i, storageConfig := range initializationEnv.StorageConfigurations {
 		if _, err := workerPool.AddFunc(storageConfig.Cron, func() {
-			workerState := workerBlocker.WorkerStates[i]
-			if workerState.IsRunning() {
-				fmt.Printf("[INFO][worker: %d] skipped\n", i+1)
-				return
+			if workerRunErr := workers[i].SyncRun(func() error {
+				fmt.Printf("[INFO][worker#: %d][worker_name: %s] start sync job\n", i+1, storageConfig.WorkerName)
+				ctx := context.Background()
+
+				cmd := exec.CommandContext(
+					ctx,
+					"./rclone", "sync",
+					storageConfig.LocalRootPath, // source
+					fmt.Sprintf(
+						"%s:%s",
+						storageConfig.Alias,
+						storageConfig.RemoteRootPath,
+					), // destination
+					"-P",
+					"--create-empty-src-dirs",
+					"--transfers", fmt.Sprintf("%d", storageConfig.Transfers),
+					"--checksum",
+				)
+
+				if err := cmd.Run(); err != nil {
+					return err
+				}
+
+				fmt.Printf("[INFO][worker: %d][worker_name: %s] end sync job\n", i+1, storageConfig.WorkerName)
+				return nil
+			}); workerRunErr != nil {
+				if errors.Is(workerRunErr, worker.IsRunningWorkerErr) {
+					fmt.Printf("[INFO][worker: %d][worker_name: %s] skipped because this worker is still running...\n", i+1, storageConfig.WorkerName)
+					return
+				}
+
+				fmt.Printf("[ERROR] failed to sync job: %v\n", workerRunErr)
 			}
-
-			workerState.SetIsRunning(true)
-			fmt.Printf("[INFO][worker: %d] start sync job\n", i+1)
-			ctx := context.Background()
-
-			cmd := exec.CommandContext(
-				ctx,
-				"./rclone", "sync",
-				storageConfig.LocalRootPath, // source
-				fmt.Sprintf(
-					"%s:%s",
-					storageConfig.Alias,
-					storageConfig.RemoteRootPath,
-				), // destination
-				"-P",
-				"--create-empty-src-dirs",
-				"--transfers", fmt.Sprintf("%d", storageConfig.Transfers),
-				"--checksum",
-			)
-
-			if err := cmd.Run(); err != nil {
-				panic(err.Error())
-			}
-
-			workerState.SetIsRunning(false)
-			fmt.Printf("[INFO][worker: %d] end sync job\n", i+1)
 		}); err != nil {
 			panic("[init][ERROR] failed to create cron job")
 		}
@@ -62,4 +65,13 @@ func main() {
 
 	workerPool.Run()
 	fmt.Println("[INFO] stop application")
+}
+
+func createWorkers(size int) []worker.Worker {
+	workers := make([]worker.Worker, 0, size)
+	for i := 0; i < size; i++ {
+		workers = append(workers, worker.NewWorker())
+	}
+
+	return workers
 }
