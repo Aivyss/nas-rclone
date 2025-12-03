@@ -5,7 +5,23 @@
       "workerName": "Filen/nas_aivyssuser",
       "remoteRootPath": "/nas_aivyssuser",
       "localRootPath": "/nas_aivyssuser",
-      "cron": "6 19 * * *",
+      "cron": "0 19 * * *",
+      "transfers": 4
+    },
+    {
+      "alias": "FilenRemote",
+      "workerName": "Filen/plex/music",
+      "remoteRootPath": "/nas_plex/music",
+      "localRootPath": "/nas_plex/music",
+      "cron": "0 19 * * *",
+      "transfers": 4
+    },
+    {
+      "alias": "FilenRemote",
+      "workerName": "Filen/nas_plex/movies",
+      "remoteRootPath": "/nas_plex/movies",
+      "localRootPath": "/nas_plex/movies",
+      "cron": "0 19 * * *",
       "transfers": 4
     },
     {
@@ -13,7 +29,7 @@
       "workerName": "Koofr/nas_plex/music",
       "remoteRootPath": "/nas_plex/music",
       "localRootPath": "/nas_plex/music",
-      "cron": "6 19 * * *",
+      "cron": "0 19 * * *",
       "transfers": 4
     },
     {
@@ -21,7 +37,7 @@
       "workerName": "Koofr/nas_homes_aivyssuser",
       "remoteRootPath": "/nas_homes_aivyssuser",
       "localRootPath": "/nas_homes_aivyssuser",
-      "cron": "6 19 * * *",
+      "cron": "0 19 * * *",
       "transfers": 4
     },
     {
@@ -29,7 +45,7 @@
       "workerName": "Koofr/nas_immich",
       "remoteRootPath": "/nas_immich",
       "localRootPath": "/nas_immich",
-      "cron": "6 19 * * *",
+      "cron": "0 19 * * *",
       "transfers": 4
     }
   ]
