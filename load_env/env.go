@@ -7,12 +7,12 @@ import (
 )
 
 type storageConfiguration struct {
-	Alias          string `json:"alias"`
-	WorkerName     string `json:"workerName"`
-	RemoteRootPath string `json:"remoteRootPath"`
-	LocalRootPath  string `json:"localRootPath"`
-	Cron           string `json:"cron"`
-	Transfers      int    `json:"transfers"`
+	Alias           string `json:"alias"`
+	WorkerName      string `json:"workerName"`
+	DestinationPath string `json:"destinationPath"`
+	SourcePath      string `json:"sourcePath"`
+	Cron            string `json:"cron"`
+	Transfers       int    `json:"transfers"`
 }
 
 type InitializationEnv struct {

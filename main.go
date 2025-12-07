@@ -26,29 +26,31 @@ func main() {
 	for i, storageConfig := range initializationEnv.StorageConfigurations {
 		if _, err := workerPool.AddFunc(storageConfig.Cron, func() {
 			if workerRunErr := workers[i].SyncRun(func() error {
-				fmt.Printf("[INFO][worker#: %d][worker_name: %s] start sync job\n", i+1, storageConfig.WorkerName)
+				fmt.Printf("[INFO][worker: %d][worker_name: %s] start sync job\n", i+1, storageConfig.WorkerName)
 				ctx := context.Background()
 
 				cmd := exec.CommandContext(
 					ctx,
 					"./rclone", "sync",
-					storageConfig.LocalRootPath, // source
+					storageConfig.SourcePath,
 					fmt.Sprintf(
 						"%s:%s",
 						storageConfig.Alias,
-						storageConfig.RemoteRootPath,
-					), // destination
+						storageConfig.DestinationPath,
+					),
 					"-P",
 					"--create-empty-src-dirs",
 					"--transfers", fmt.Sprintf("%d", storageConfig.Transfers),
 					"--checksum",
+					"--exclude", "._*",
+					"--exclude", ".DS_Store",
 				)
 
 				if err := cmd.Run(); err != nil {
 					return err
 				}
 
-				fmt.Printf("[INFO][worker: %d][worker_name: %s] end sync job\n", i+1, storageConfig.WorkerName)
+				fmt.Printf("[INFO][worker: %d][worker_name: %s] end sync job, progress: %d%% \n", i+1, storageConfig.WorkerName, workers.GetProgressPercent())
 				return nil
 			}); workerRunErr != nil {
 				if errors.Is(workerRunErr, worker.IsRunningWorkerErr) {
@@ -67,7 +69,7 @@ func main() {
 	fmt.Println("[INFO] stop application")
 }
 
-func createWorkers(size int) []worker.Worker {
+func createWorkers(size int) worker.Workers {
 	workers := make([]worker.Worker, 0, size)
 	for i := 0; i < size; i++ {
 		workers = append(workers, worker.NewWorker())

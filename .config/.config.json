@@ -1,51 +1,111 @@
 {
   "storageConfigurations": [
     {
-      "alias": "FilenRemote",
-      "workerName": "Filen/nas_aivyssuser",
-      "remoteRootPath": "/nas_aivyssuser",
-      "localRootPath": "/nas_aivyssuser",
-      "cron": "0 19 * * *",
+      "alias": "pvault",
+      "workerName": "pvault/nas_plex/movies",
+      "destinationPath": "/nas_plex/movies",
+      "sourcePath": "/nas_plex/movies",
+      "cron": "0 3 * * 6",
+      "transfers": 8
+    },
+    {
+      "alias": "pvault",
+      "workerName": "pvault/nas_plex/music",
+      "destinationPath": "/nas_plex/music",
+      "sourcePath": "/nas_plex/music",
+      "cron": "0 3 * * 6",
       "transfers": 4
     },
     {
-      "alias": "FilenRemote",
-      "workerName": "Filen/plex/music",
-      "remoteRootPath": "/nas_plex/music",
-      "localRootPath": "/nas_plex/music",
-      "cron": "0 19 * * *",
+      "alias": "pvault",
+      "workerName": "pvault/nas_aivyssuser",
+      "destinationPath": "/nas_aivyssuser",
+      "sourcePath": "/nas_aivyssuser",
+      "cron": "0 3 * * 6",
       "transfers": 4
     },
     {
-      "alias": "FilenRemote",
-      "workerName": "Filen/nas_plex/movies",
-      "remoteRootPath": "/nas_plex/movies",
-      "localRootPath": "/nas_plex/movies",
-      "cron": "0 19 * * *",
+      "alias": "pvault",
+      "workerName": "pvault/nas_homes_aivyssuser",
+      "destinationPath": "/nas_homes_aivyssuser",
+      "sourcePath": "/nas_homes_aivyssuser",
+      "cron": "0 3 * * 6",
       "transfers": 4
     },
     {
-      "alias": "KoofrRemote",
-      "workerName": "Koofr/nas_plex/music",
-      "remoteRootPath": "/nas_plex/music",
-      "localRootPath": "/nas_plex/music",
-      "cron": "0 19 * * *",
+      "alias": "pvault",
+      "workerName": "pvault/nas_immich",
+      "destinationPath": "/nas_immich",
+      "sourcePath": "/nas_immich",
+      "cron": "0 3 * * 6",
+      "transfers": 4
+    },
+
+    {
+      "alias": "filen",
+      "workerName": "filen/nas_plex/movies",
+      "destinationPath": "/nas_plex/movies",
+      "sourcePath": "pvault:/nas_plex/movies",
+      "cron": "0 3 * * 6",
+      "transfers": 8
+    },
+    {
+      "alias": "filen",
+      "workerName": "filen/nas_plex/music",
+      "destinationPath": "/nas_plex/music",
+      "sourcePath": "pvault:/nas_plex/music",
+      "cron": "0 3 * * 6",
       "transfers": 4
     },
     {
-      "alias": "KoofrRemote",
-      "workerName": "Koofr/nas_homes_aivyssuser",
-      "remoteRootPath": "/nas_homes_aivyssuser",
-      "localRootPath": "/nas_homes_aivyssuser",
-      "cron": "0 19 * * *",
+      "alias": "filen",
+      "workerName": "filen/nas_aivyssuser",
+      "destinationPath": "/nas_aivyssuser",
+      "sourcePath": "pvault:/nas_aivyssuser",
+      "cron": "0 3 * * 6",
       "transfers": 4
     },
     {
-      "alias": "KoofrRemote",
-      "workerName": "Koofr/nas_immich",
-      "remoteRootPath": "/nas_immich",
-      "localRootPath": "/nas_immich",
-      "cron": "0 19 * * *",
+      "alias": "filen",
+      "workerName": "filen/nas_homes_aivyssuser",
+      "destinationPath": "/nas_homes_aivyssuser",
+      "sourcePath": "pvault:/nas_homes_aivyssuser",
+      "cron": "0 3 * * 6",
+      "transfers": 4
+    },
+    {
+      "alias": "filen",
+      "workerName": "filen/nas_immich",
+      "destinationPath": "/nas_immich",
+      "sourcePath": "pvault:/nas_immich",
+      "cron": "0 3 * * 6",
+      "transfers": 4
+    },
+
+
+
+    {
+      "alias": "koofr",
+      "workerName": "koofr/nas_plex/music",
+      "destinationPath": "/nas_plex/music",
+      "sourcePath": "pvault:/nas_plex/music",
+      "cron": "0 3 * * 6",
+      "transfers": 4
+    },
+    {
+      "alias": "koofr",
+      "workerName": "koofr/nas_homes_aivyssuser",
+      "destinationPath": "/nas_homes_aivyssuser",
+      "sourcePath": "pvault:/nas_homes_aivyssuser",
+      "cron": "0 3 * * 6",
+      "transfers": 4
+    },
+    {
+      "alias": "koofr",
+      "workerName": "koofr/nas_immich",
+      "destinationPath": "/nas_immich",
+      "sourcePath": "pvault:/nas_immich",
+      "cron": "0 3 * * 6",
       "transfers": 4
     }
   ]

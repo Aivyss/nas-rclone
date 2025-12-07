@@ -2,6 +2,7 @@ package worker
 
 import (
 	"fmt"
+	"nas-rclone/common"
 	"sync"
 )
 
@@ -11,6 +12,22 @@ var (
 
 type Worker interface {
 	SyncRun(func() error) error
+	IsRunning() bool
+}
+
+type Workers []Worker
+
+/*
+GetProgressPercent
+return -> 0 ~ 100
+*/
+func (ws Workers) GetProgressPercent() int {
+	totalWorkersSize := len(ws)
+	doneWorkersSize := len(common.FilterSlice(ws, func(e Worker) bool {
+		return !e.IsRunning()
+	}))
+
+	return (100 * doneWorkersSize) / totalWorkersSize
 }
 
 type worker struct {
@@ -31,6 +48,10 @@ func (w *worker) SyncRun(f func() error) error {
 	w.Unlock()
 
 	return err
+}
+
+func (w *worker) IsRunning() bool {
+	return w.isRunning
 }
 
 func NewWorker() Worker {
