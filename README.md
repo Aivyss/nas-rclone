@@ -20,18 +20,24 @@ docker-compose.yml의 volumes 설정에는 `DO NOT FIX THIS` 코멘트가 있는
 
 ```json
 {
-  "storageConfigurations": [
+  "workerConfigurations": [
     {
+      "syncType": "copy",
       "alias": "cloud_a",
-      "remoteRootPath": "/local_folder_a",
-      "localRootPath": "/remote_folder_a",
-      "cron": "* * * * *"
+      "workerName": "worker1",
+      "destinationPath": "/local_folder_a",
+      "sourcePath": "/remote_folder_a",
+      "cron": "* * * * *",
+      "transfers": 8
     },
     {
+      "syncType": "sync",
       "alias": "cloud_a",
-      "remoteRootPath": "/local_folder_b",
-      "localRootPath": "/remote_folder_b",
-      "cron": "* * * * *"
+      "workerName": "worker2",
+      "destinationPath": "/local_folder_b",
+      "sourcePath": "/remote_folder_b",
+      "cron": "* * * * *",
+      "transfers": 16
     }
   ]
 }
